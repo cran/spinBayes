@@ -4,9 +4,22 @@
 \alias{BVCfit}
 \title{fit a Semi-parametric Bayesian variable selection}
 \usage{
-BVCfit(X, Y, Z, E = NULL, clin = NULL, iterations = 10000,
-  burn.in = NULL, sparse = TRUE, structural = TRUE, VC = TRUE,
-  kn = 2, degree = 2, hyper = NULL, debugging = FALSE)
+BVCfit(
+  X,
+  Y,
+  Z,
+  E = NULL,
+  clin = NULL,
+  iterations = 10000,
+  burn.in = NULL,
+  sparse = TRUE,
+  structural = TRUE,
+  VC = TRUE,
+  kn = 2,
+  degree = 2,
+  hyper = NULL,
+  debugging = FALSE
+)
 }
 \arguments{
 \item{X}{the matrix of predictors (genetic factors) without intercept. Each row should be an observation vector. A column of 1 will be added to the X matrix
@@ -41,10 +54,12 @@ If FALSE, interactions between Z and X will be modeled as linear interactions.}
 }
 \value{
 an object of class "BVCfit" is returned, which is a list with components:
-\item{posterior}{posterior samples from the MCMC}
-\item{coefficients}{a list of posterior estimates of coefficients}
-\item{burn.in}{the number of iterations for burn-in}
-\item{iterations}{the number of MCMC iterations.}
+\itemize{
+\item posterior: posterior samples from the MCMC
+\item coefficients: a list of posterior estimates of coefficients
+\item burn.in: the number of iterations for burn-in
+\item iterations: the number of MCMC iterations.
+}
 }
 \description{
 fit a Bayesian semi-parametric model for both linear and non-linear G×E interactions. Users can also specify all the interactions as linear and fit a Bayesian LASSO type of model.
@@ -68,12 +83,12 @@ Please check the references for more details about the model.
 Users can modify the hyper-parameters by providing a named list of hyper-parameters via the argument 'hyper'.
 The list can have the following named components
 \itemize{
-  \item{a.c, a.v, a.e: }{ shape parameters of the Gamma priors on \eqn{\lambda_{c}}, \eqn{\lambda_{v}} and \eqn{\lambda_{e}}, respectively.}
-  \item{b.c, b.v, b.e: }{ rate parameters of the Gamma priors on \eqn{\lambda_{c}}, \eqn{\lambda_{v}} and \eqn{\lambda_{e}}, respectively.}
-  \item{r.c, r.v, r.e: }{ shape parameters of the Beta priors (\eqn{\pi^{r-1}(1-\pi)^{w-1}}) on \eqn{\pi_{c}}, \eqn{\pi_{v}} and \eqn{\pi_{e}}, respectively.}
-  \item{w.c, w.v, w.e: }{ shape parameters of the Beta priors on \eqn{\pi_{c}}, \eqn{\pi_{v}} and \eqn{\pi_{e}}, respectively.}
-  \item{s: }{ shape parameters of the Inverse-gamma prior on \eqn{\sigma^{2}}.}
-  \item{h: }{ scale parameters of the Inverse-gamma prior on \eqn{\sigma^{2}}.}
+  \item a.c, a.v, a.e: shape parameters of the Gamma priors on \eqn{\lambda_{c}}, \eqn{\lambda_{v}} and \eqn{\lambda_{e}}, respectively.
+  \item b.c, b.v, b.e: rate parameters of the Gamma priors on \eqn{\lambda_{c}}, \eqn{\lambda_{v}} and \eqn{\lambda_{e}}, respectively.
+  \item r.c, r.v, r.e: shape parameters of the Beta priors (\eqn{\pi^{r-1}(1-\pi)^{w-1}}) on \eqn{\pi_{c}}, \eqn{\pi_{v}} and \eqn{\pi_{e}}, respectively.
+  \item w.c, w.v, w.e: shape parameters of the Beta priors on \eqn{\pi_{c}}, \eqn{\pi_{v}} and \eqn{\pi_{e}}, respectively.
+  \item s: shape parameters of the Inverse-gamma prior on \eqn{\sigma^{2}}.
+  \item h: scale parameters of the Inverse-gamma prior on \eqn{\sigma^{2}}.
 }
 Please check the references for more details about the prior distributions.
 }
@@ -98,7 +113,7 @@ spbayes
 
 }
 \references{
-Ren, J., Zhou, F., Li, X., Chen, Q., Zhang, H., Ma, S., Jiang, Y., Wu, C. (2019) Semi-parametric Bayesian variable selection for gene-environment interactions.
-\url{https://arxiv.org/abs/1906.01057}
+Ren, J., Zhou, F., Li, X., Chen, Q., Zhang, H., Ma, S., Jiang, Y., Wu, C. (2020) Semiparametric Bayesian variable selection for gene-environment interactions.
+{\emph{Statistics in Medicine}, 39(5): 617– 638} \doi{10.1002/sim.8434}
 }
 \keyword{models}

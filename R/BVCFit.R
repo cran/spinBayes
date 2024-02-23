@@ -38,24 +38,26 @@
 #' Users can modify the hyper-parameters by providing a named list of hyper-parameters via the argument 'hyper'.
 #' The list can have the following named components
 #' \itemize{
-#'   \item{a.c, a.v, a.e: }{ shape parameters of the Gamma priors on \eqn{\lambda_{c}}, \eqn{\lambda_{v}} and \eqn{\lambda_{e}}, respectively.}
-#'   \item{b.c, b.v, b.e: }{ rate parameters of the Gamma priors on \eqn{\lambda_{c}}, \eqn{\lambda_{v}} and \eqn{\lambda_{e}}, respectively.}
-#'   \item{r.c, r.v, r.e: }{ shape parameters of the Beta priors (\eqn{\pi^{r-1}(1-\pi)^{w-1}}) on \eqn{\pi_{c}}, \eqn{\pi_{v}} and \eqn{\pi_{e}}, respectively.}
-#'   \item{w.c, w.v, w.e: }{ shape parameters of the Beta priors on \eqn{\pi_{c}}, \eqn{\pi_{v}} and \eqn{\pi_{e}}, respectively.}
-#'   \item{s: }{ shape parameters of the Inverse-gamma prior on \eqn{\sigma^{2}}.}
-#'   \item{h: }{ scale parameters of the Inverse-gamma prior on \eqn{\sigma^{2}}.}
+#'   \item a.c, a.v, a.e: shape parameters of the Gamma priors on \eqn{\lambda_{c}}, \eqn{\lambda_{v}} and \eqn{\lambda_{e}}, respectively.
+#'   \item b.c, b.v, b.e: rate parameters of the Gamma priors on \eqn{\lambda_{c}}, \eqn{\lambda_{v}} and \eqn{\lambda_{e}}, respectively.
+#'   \item r.c, r.v, r.e: shape parameters of the Beta priors (\eqn{\pi^{r-1}(1-\pi)^{w-1}}) on \eqn{\pi_{c}}, \eqn{\pi_{v}} and \eqn{\pi_{e}}, respectively.
+#'   \item w.c, w.v, w.e: shape parameters of the Beta priors on \eqn{\pi_{c}}, \eqn{\pi_{v}} and \eqn{\pi_{e}}, respectively.
+#'   \item s: shape parameters of the Inverse-gamma prior on \eqn{\sigma^{2}}.
+#'   \item h: scale parameters of the Inverse-gamma prior on \eqn{\sigma^{2}}.
 #' }
 #' Please check the references for more details about the prior distributions.
 #'
 #' @return an object of class "BVCfit" is returned, which is a list with components:
-#' \item{posterior}{posterior samples from the MCMC}
-#' \item{coefficients}{a list of posterior estimates of coefficients}
-#' \item{burn.in}{the number of iterations for burn-in}
-#' \item{iterations}{the number of MCMC iterations.}
+#' \itemize{
+#' \item posterior: posterior samples from the MCMC
+#' \item coefficients: a list of posterior estimates of coefficients
+#' \item burn.in: the number of iterations for burn-in
+#' \item iterations: the number of MCMC iterations.
+#' }
 #'
 #' @references
-#' Ren, J., Zhou, F., Li, X., Chen, Q., Zhang, H., Ma, S., Jiang, Y., Wu, C. (2019) Semi-parametric Bayesian variable selection for gene-environment interactions.
-#' \url{https://arxiv.org/abs/1906.01057}
+#' Ren, J., Zhou, F., Li, X., Chen, Q., Zhang, H., Ma, S., Jiang, Y., Wu, C. (2020) Semiparametric Bayesian variable selection for gene-environment interactions.
+#' {\emph{Statistics in Medicine}, 39(5): 617– 638} \doi{10.1002/sim.8434}
 #'
 #' @examples
 #' data(gExp)
@@ -160,6 +162,8 @@ BVCfit <- function(X, Y, Z, E=NULL, clin=NULL, iterations=10000, burn.in=NULL, s
   hat.clc = coeff.clc[1:nclc]              ## E CLC Z
   hat.zeta = utils::tail(coeff.clc, -nclc)  ## EX ZX
 
+  des.mat = list(xx=NULL, y=y, CLC=CLC, EX=EX)
+
   if(!VC){
 	  out = BLasso(xx, y, CLC, EX, ZX, s, iterations, coeff.array[1], coeff.array[2:ncol(xx)], hat.clc, hat.zeta, hyper, debugging)
 	  CC = apply(out$posterior$GS.r0[-c(1:BI),,drop=FALSE], 2, stats::median)
@@ -173,19 +177,22 @@ BVCfit <- function(X, Y, Z, E=NULL, clin=NULL, iterations=10000, burn.in=NULL, s
       CC = apply(out$posterior$GS.r0[-c(1:BI),,drop=FALSE], 2, stats::median)
       VV = apply(out$posterior$GS.rs[-c(1:BI),,drop=FALSE], 2, stats::median)
       coeff = cbind(INT, rbind(CC, matrix(VV, nrow = q-1)))
+      des.mat$xx = xx
     }else{
       hat.r = c(rbind(hat.r0, matrix(hat.r.star, nrow = (q-1))))
       out = BVC_NS(design$Xns, y, CLC, EX, s, q, iterations, hat.m, hat.r, hat.clc, hat.zeta, sparse, hyper, debugging)
       INT = apply(out$posterior$GS.m[-c(1:BI),,drop=FALSE], 2, stats::median)
       VV = apply(out$posterior$GS.rs[-c(1:BI),,drop=FALSE], 2, stats::median)
       coeff = cbind(INT, matrix(VV, nrow = q))
+      des.mat$xx = design$Xns
     }
     colnames(coeff) = c("intercept",Var.names)
     rownames(coeff) = paste("basis", 0:(q-1), sep="")
   }
 
   this.call = match.call()
-  basis = list(q=q, kn=kn, degree=degree)
+  basis = list(q=q, kn=kn, degree=degree, Z=Z)
+
 
   if(noE && noClin){
     coeff.clin = NULL
@@ -217,10 +224,14 @@ BVCfit <- function(X, Y, Z, E=NULL, clin=NULL, iterations=10000, burn.in=NULL, s
   }
   if(noClin) coefficient$clin = NULL
 
-  fit = list(call = this.call, posterior = out$posterior, coefficient=coefficient, burn.in = BI, iterations=iterations)
+
+  fit = list(call = this.call, posterior = out$posterior, coefficient=coefficient, iterations=iterations, burn.in = BI)
 
   if(debugging && sparse) fit$debugList = out$debugList;
-  if(VC) fit$basis = basis;
+  if(VC){
+    fit$basis = basis
+    fit$des.mat = des.mat
+  }
 
   class(fit)=c("BVCfit", class(out))
   fit

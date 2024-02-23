@@ -30,6 +30,7 @@ Selection.CI <- function(GS.r, L, level){
 }
 
 
+
 .onUnload <- function (libpath) {
   library.dynam.unload("spinBayes", libpath)
 }

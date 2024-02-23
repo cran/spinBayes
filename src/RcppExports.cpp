@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // BVCStr
 Rcpp::List BVCStr(arma::mat xx, arma::vec y, arma::mat W, arma::mat Ex, unsigned int s, unsigned int q, int maxSteps, arma::vec hatM, arma::vec hatR0, arma::vec hatRStar, arma::vec hatAlpha, arma::vec hatZeta, arma::vec hatInvSigM0, arma::vec hatInvTauSq0, arma::vec hatInvTauSqStar, arma::mat invSigAlpha0, arma::vec hatInvTauSqZeta, double hatLambdaSq0, double hatLambdaSqStar, double hatLambdaSqZeta, double hatSigmaSq, double a0, double b0, double aStar, double bStar, double alpha, double gamma, int progress);
 RcppExport SEXP _spinBayes_BVCStr(SEXP xxSEXP, SEXP ySEXP, SEXP WSEXP, SEXP ExSEXP, SEXP sSEXP, SEXP qSEXP, SEXP maxStepsSEXP, SEXP hatMSEXP, SEXP hatR0SEXP, SEXP hatRStarSEXP, SEXP hatAlphaSEXP, SEXP hatZetaSEXP, SEXP hatInvSigM0SEXP, SEXP hatInvTauSq0SEXP, SEXP hatInvTauSqStarSEXP, SEXP invSigAlpha0SEXP, SEXP hatInvTauSqZetaSEXP, SEXP hatLambdaSq0SEXP, SEXP hatLambdaSqStarSEXP, SEXP hatLambdaSqZetaSEXP, SEXP hatSigmaSqSEXP, SEXP a0SEXP, SEXP b0SEXP, SEXP aStarSEXP, SEXP bStarSEXP, SEXP alphaSEXP, SEXP gammaSEXP, SEXP progressSEXP) {
@@ -340,6 +345,35 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// BayesRefit
+Rcpp::List BayesRefit(arma::mat& xx, arma::vec& y, unsigned int s0, unsigned int q, int maxSteps, double hatM, arma::vec& hatRStar, double invSigM0, arma::vec& hatInvTauSq, double hatLambdaSq, double hatSigmaSq, double aStar, double bStar, double alpha, double gamma, int progress, bool debug);
+RcppExport SEXP _spinBayes_BayesRefit(SEXP xxSEXP, SEXP ySEXP, SEXP s0SEXP, SEXP qSEXP, SEXP maxStepsSEXP, SEXP hatMSEXP, SEXP hatRStarSEXP, SEXP invSigM0SEXP, SEXP hatInvTauSqSEXP, SEXP hatLambdaSqSEXP, SEXP hatSigmaSqSEXP, SEXP aStarSEXP, SEXP bStarSEXP, SEXP alphaSEXP, SEXP gammaSEXP, SEXP progressSEXP, SEXP debugSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat& >::type xx(xxSEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type s0(s0SEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type q(qSEXP);
+    Rcpp::traits::input_parameter< int >::type maxSteps(maxStepsSEXP);
+    Rcpp::traits::input_parameter< double >::type hatM(hatMSEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type hatRStar(hatRStarSEXP);
+    Rcpp::traits::input_parameter< double >::type invSigM0(invSigM0SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type hatInvTauSq(hatInvTauSqSEXP);
+    Rcpp::traits::input_parameter< double >::type hatLambdaSq(hatLambdaSqSEXP);
+    Rcpp::traits::input_parameter< double >::type hatSigmaSq(hatSigmaSqSEXP);
+    Rcpp::traits::input_parameter< double >::type aStar(aStarSEXP);
+    Rcpp::traits::input_parameter< double >::type bStar(bStarSEXP);
+    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< int >::type progress(progressSEXP);
+    Rcpp::traits::input_parameter< bool >::type debug(debugSEXP);
+    rcpp_result_gen = Rcpp::wrap(BayesRefit(xx, y, s0, q, maxSteps, hatM, hatRStar, invSigM0, hatInvTauSq, hatLambdaSq, hatSigmaSq, aStar, bStar, alpha, gamma, progress, debug));
+    return rcpp_result_gen;
+END_RCPP
+}
+
+RcppExport SEXP run_testthat_tests(void);
 
 static const R_CallMethodDef CallEntries[] = {
     {"_spinBayes_BVCStr", (DL_FUNC) &_spinBayes_BVCStr, 28},
@@ -351,6 +385,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_spinBayes_BVCNoStr", (DL_FUNC) &_spinBayes_BVCNoStr, 25},
     {"_spinBayes_BVCNoStr_NoE", (DL_FUNC) &_spinBayes_BVCNoStr_NoE, 20},
     {"_spinBayes_BayesLasso", (DL_FUNC) &_spinBayes_BayesLasso, 24},
+    {"_spinBayes_BayesRefit", (DL_FUNC) &_spinBayes_BayesRefit, 17},
+    {"run_testthat_tests", (DL_FUNC) &run_testthat_tests, 0},
     {NULL, NULL, 0}
 };
 
