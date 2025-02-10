@@ -1,5 +1,6 @@
-5f09b6a488e1d50ec7aebcd2a5e78a75 *DESCRIPTION
+6fc8dd1262d2024ad2c23fd43489f086 *DESCRIPTION
 c31e43bf5b7281575bac1a63d1e60185 *NAMESPACE
+bed14d223b18d941e5bf56d73ab6ff83 *NEWS.md
 9db936505363459e257db6fdba6c026a *R/BLasso.R
 d8f091000a5f357ecb6900383d66ae22 *R/BVC.R
 aebc2dba47168d6811450bcc7ff85d3a *R/BVCFit.R
@@ -12,8 +13,8 @@ a374ca8099cf1fdeeced05b5758cc0cb *R/plot.BVCfit.R
 154bce48e287fcc0dcc4a0f52dfb945e *R/predict.BVCfit.R
 fda0427405608655fef3f54bb0437eb3 *R/print.BVCfit.R
 8f95839c4ea3f8607557b7328bee435d *R/spinBayes-package.R
-765c5a9d80e7c222e55357b33440281d *README.md
-24bc7c3f5a645905c53152bd3d0b8f61 *build/partial.rdb
+ac069d57a8bee24167a94466f80dcbc0 *README.md
+1dda19015f0aa969acee990c150e3ac9 *build/partial.rdb
 c39fc2168c9d36b2254919e6a98712d4 *data/gExp.L.rda
 b642955d4fbf867f1983fca8b4819678 *data/gExp.new.rda
 7b89fcda9bb8e5238d71066fe60c15f2 *data/gExp.rda
@@ -25,7 +26,7 @@ c8156dbda85a50b16ef2f8c9f0881811 *man/data.Rd
 d742448c20c0740e5cf973b8cb6ea639 *man/print.BVCfit.Rd
 d1ea8dca5aae7c46349b70ad8e648202 *man/print.BVCfit.pred.Rd
 24764b0b4693a79b58e6df32fa114b56 *man/print.BVSelection.Rd
-f73e047af1a7e5675dbb4859093f8933 *man/spinBayes-package.Rd
+887c12701cde526ad5e491612a17df9d *man/spinBayes-package.Rd
 04b57b1564053f592b189816b6545e61 *src/BVC.cpp
 f56f7f52180b6d1884806a2352ad97d5 *src/BVCPM.cpp
 ac085eecc9f53d38c84b538e18a79b8d *src/BVCPM_NS.cpp
